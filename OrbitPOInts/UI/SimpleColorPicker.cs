@@ -24,6 +24,7 @@ namespace OrbitPOInts.UI
         private float _red = 1.0f;
         private float _green = 1.0f;
         private float _blue = 1.0f;
+        private float _alpha = 1.0f;
         private Color _color = Color.white;
         private Color _initialColor;
         private Color _defaultColor;
@@ -45,6 +46,7 @@ namespace OrbitPOInts.UI
             _red = initialColor.r;
             _green = initialColor.g;
             _blue = initialColor.b;
+            _alpha = initialColor.a;
             DisplayGUI();
             CenterWindowPos();
         }
@@ -59,7 +61,7 @@ namespace OrbitPOInts.UI
             Logger.Log($"[SimpleColorPicker] {message}");
         }
 
-        public Color GetCurrentColor() => new Color(_red, _green, _blue);
+        public Color GetCurrentColor() => new Color(_red, _green, _blue, _alpha);
         
         public void DisplayGUI(bool state = true)
         {
@@ -85,8 +87,11 @@ namespace OrbitPOInts.UI
 
             GUILayout.Label("Blue");
             _blue = GUILayout.HorizontalSlider(_blue, 0.0f, 1.0f);
+            
+            GUILayout.Label("Alpha");
+            _alpha = GUILayout.HorizontalSlider(_alpha, 0.0f, 1.0f);
 
-            _color = new Color(_red, _green, _blue);
+            _color = new Color(_red, _green, _blue, _alpha);
 
             // A simple way to display the color you've picked.
             Controls.ColorBox(_color, 100, 100);
