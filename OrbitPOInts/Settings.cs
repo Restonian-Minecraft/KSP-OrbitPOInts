@@ -188,6 +188,7 @@ namespace OrbitPOInts
         private bool _enableSpheres = true;
         private bool _alignSpheres;
         private bool _enableCircles = true;
+        private bool _enableFullSpheres = true;
 
         private bool _showPoiMaxTerrainAltitudeOnAtmosphericBodies;
 
@@ -243,6 +244,17 @@ namespace OrbitPOInts
                 if (_enableCircles == value) return;
                 _enableCircles = value;
                 OnPropertyChanged(nameof(EnableCircles));
+            }
+        }
+        
+        public bool EnableFullSpheres
+        {
+            get => _enableFullSpheres;
+            set
+            {
+                if (_enableFullSpheres == value) return;
+                _enableFullSpheres = value;
+                OnPropertyChanged(nameof(EnableFullSpheres));
             }
         }
 

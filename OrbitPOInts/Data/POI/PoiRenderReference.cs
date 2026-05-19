@@ -29,6 +29,9 @@ namespace OrbitPOInts.Data.POI
 
         [CanBeNull]
         public RenderReference<CircleRenderer> Circle { get; private set; }
+        
+        [CanBeNull]
+        public RenderReference<FullSphereRenderer> FullSphere { get; private set; }
 
         public PoiRenderReference(POI poi)
         {
@@ -66,13 +69,19 @@ namespace OrbitPOInts.Data.POI
             {
                 return circle;
             }
+
+            if (FullSphere is RenderReference<TRender> fullSphere)
+            {
+                return fullSphere;
+            }
             throw new NotSupportedException($"{typeof(TRender)} is not supported.");
         }
 
         public IEnumerable<IRenderer> GetRenderers()
         {
             return (Sphere?.Renderers.Cast<IRenderer>() ?? Enumerable.Empty<IRenderer>())
-                .Concat(Circle?.Renderers.Cast<IRenderer>() ?? Enumerable.Empty<IRenderer>());
+                .Concat(Circle?.Renderers.Cast<IRenderer>() ?? Enumerable.Empty<IRenderer>())
+                .Concat(FullSphere?.Renderers.Cast<IRenderer>() ?? Enumerable.Empty<IRenderer>());
         }
 
         private void UpdateReference<TRenderer>(RenderReference<TRenderer> renderReference)
@@ -88,6 +97,10 @@ namespace OrbitPOInts.Data.POI
                     DynamicReferenceDestroy(Circle, circleRenderReference);
                     Circle = circleRenderReference;
                     return;
+                case RenderReference<FullSphereRenderer> fullSphereRenderReference:
+                    DynamicReferenceDestroy(FullSphere, fullSphereRenderReference);
+                    FullSphere = fullSphereRenderReference;
+                    return;
                 default:
                     throw new NotSupportedException($"{typeof(TRenderer)} is not supported.");
             }
@@ -102,6 +115,11 @@ namespace OrbitPOInts.Data.POI
         {
             UpdateReference(circle);
         }
+        
+        public void UpdateFullSphereReference(RenderReference<FullSphereRenderer> fullSphere)
+        {
+            UpdateReference(fullSphere);
+        }
 
         public void DestroySphereReference()
         {
@@ -115,6 +133,13 @@ namespace OrbitPOInts.Data.POI
             Utils.Logger.LogDebug($"[PoiRenderReference][DestroySphereReference] destroying {Poi.Id} {Poi.Body}");
             Circle?.DestroyImmediate();
             Circle = null;
+        }
+        
+        public void DestroyFullSphereReference()
+        {
+            Utils.Logger.LogDebug($"[PoiRenderReference][DestroyFullSphereReference] destroying {Poi.Id} {Poi.Body}");
+            FullSphere?.DestroyImmediate();
+            FullSphere = null;
         }
 
         // TODO: maybe add a name so we can hunt these down if they become orphaned?
@@ -134,12 +159,19 @@ namespace OrbitPOInts.Data.POI
             Circle ??= new RenderReference<CircleRenderer>(CreateHolder());
             return Circle.NewRenderer(true);
         }
+        
+        public FullSphereRenderer CreateAndReplaceFullSphere()
+        {
+            FullSphere ??= new RenderReference<FullSphereRenderer>(CreateHolder());
+            return FullSphere.NewRenderer(true);
+        }
 
         public void DestroyImmediate()
         {
             Utils.Logger.LogDebug($"[PoiRenderReference][DestroyImmediate] destroying {Poi.Id} {Poi.Body}");
             DestroySphereReference();
             DestroyCircleReference();
+            DestroyFullSphereReference();
         }
     }
 }

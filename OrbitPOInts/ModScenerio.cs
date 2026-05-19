@@ -46,6 +46,7 @@ namespace OrbitPOInts
             EnableSpheres,
             AlignSpheres,
             EnableCircles,
+            EnableFullSpheres,
             ShowPoiMaxTerrainAltitudeOnAtmosphericBodies,
             LogDebugEnabled,
             UseSkin,
@@ -82,6 +83,7 @@ namespace OrbitPOInts
             Settings.Instance.EnableSpheres = node.GetBool(GetKey(SettingsBool.EnableSpheres), true);
             Settings.Instance.AlignSpheres = node.GetBool(GetKey(SettingsBool.AlignSpheres), false);
             Settings.Instance.EnableCircles = node.GetBool(GetKey(SettingsBool.EnableCircles), true);
+            Settings.Instance.EnableFullSpheres = node.GetBool(GetKey(SettingsBool.EnableFullSpheres), true);
             Settings.Instance.LogDebugEnabled = node.GetBool(GetKey(SettingsBool.LogDebugEnabled), false);
             Settings.Instance.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies = node.GetBool(GetKey(SettingsBool.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies), false);
             Settings.Instance.UseSkin = node.GetBool(GetKey(SettingsBool.UseSkin), false);
@@ -104,6 +106,7 @@ namespace OrbitPOInts
             node.AddValue(GetKey(SettingsBool.EnableSpheres), Settings.Instance.EnableSpheres);
             node.AddValue(GetKey(SettingsBool.AlignSpheres), Settings.Instance.AlignSpheres);
             node.AddValue(GetKey(SettingsBool.EnableCircles), Settings.Instance.EnableCircles);
+            node.AddValue(GetKey(SettingsBool.EnableFullSpheres), Settings.Instance.EnableFullSpheres);
             node.AddValue(GetKey(SettingsBool.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies), Settings.Instance.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies);
             node.AddValue(GetKey(SettingsBool.LogDebugEnabled), Settings.Instance.LogDebugEnabled);
             node.AddValue(GetKey(SettingsBool.UseSkin), Settings.Instance.UseSkin);

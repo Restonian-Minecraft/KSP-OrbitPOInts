@@ -63,6 +63,7 @@ namespace OrbitPOInts
 
         public bool DrawSpheres;
         public bool DrawCircles;
+        public bool DrawFullSpheres;
         public bool AlignSpheres;
         public bool FocusedBodyOnly;
         public bool enabled = true;
@@ -120,6 +121,19 @@ namespace OrbitPOInts
                 action.Invoke(circle);
             }
         }
+        
+        private void DoActionOnFullSpheres(Action<FullSphereRenderer> action)
+        {
+            foreach (var fullSphere in _poiRenderReferenceManager.GetAllRenderReferenceRenderers<FullSphereRenderer>())
+            {
+                if (!fullSphere.IsAlive() || fullSphere.IsDying)
+                {
+                    LogError($"[DoActionOnFullSpheres] full sphere null or dying");
+                    continue;
+                }
+                action.Invoke(fullSphere);
+            }
+        }
 
         public void RemovePoi(POI poi)
         {
@@ -142,6 +156,7 @@ namespace OrbitPOInts
                 CreateNewPoiRender(patchedPoi, (poi, enabled) =>
                 {
                     CreateCircleFromPoi(poi, enabled);
+                    CreateFullSphereFromPoi(poi, enabled);
                     CreateWireSphereFromPoi(poi, enabled);
                 });
             }
@@ -282,15 +297,18 @@ namespace OrbitPOInts
             List<IRenderer> renderersThatNeedTransformsAligned = new();
 
             DoActionOnCircles(circle => renderersThatNeedTransformsAligned.Add(circle));
+            // should FullSphereRenderer go here instead? Like the CircleRenderer, it looks the same in all orientations   
 
             if (AlignSpheres)
             {
                 DoActionOnSpheres(sphere => renderersThatNeedTransformsAligned.Add(sphere));
+                DoActionOnSpheres(fullSphere => renderersThatNeedTransformsAligned.Add(fullSphere));
             }
             else
             {
                 List<IRenderer> rendererThatNeedTransformsReset = new();
                 DoActionOnSpheres(sphere => rendererThatNeedTransformsReset.Add(sphere));
+                DoActionOnSpheres(fullSphere => rendererThatNeedTransformsReset.Add(fullSphere));
                 foreach (var renderer in rendererThatNeedTransformsReset)
                 {
                     if (!renderer.IsAliveAndActiveWithTransform()) continue;
@@ -450,6 +468,7 @@ namespace OrbitPOInts
         {
             Spheres,
             Circles,
+            FullSpheres,
             All,
         }
         private void CreateBodyItems(CelestialBody body, CreateMode mode = CreateMode.All)
@@ -460,6 +479,12 @@ namespace OrbitPOInts
                 {
                     LogDebug($"[CreateBodyItems]: Generating circle around {body.name} {poi.Type} {poi.RadiusForRendering()}");
                     CreateCircleFromPoi(poi, enabled);
+                }
+                
+                if (mode is CreateMode.All or CreateMode.FullSpheres)
+                {
+                    LogDebug($"[CreateBodyItems]: Generating circle around {body.name} {poi.Type} {poi.RadiusForRendering()}");
+                    CreateFullSphereFromPoi(poi, enabled);
                 }
 
                 if (mode is CreateMode.All or CreateMode.Spheres)
@@ -494,6 +519,7 @@ namespace OrbitPOInts
             LogDebug("[RefreshCurrentRenderers]");
             var safeToDraw = SafeToDraw("[RefreshCurrentRenderers]");
             SetEnabledCircles(safeToDraw && DrawCircles);
+            SetEnabledFullSpheres(safeToDraw && DrawFullSpheres);
             SetEnabledSpheres(safeToDraw && DrawSpheres);
         }
 
@@ -618,6 +644,65 @@ namespace OrbitPOInts
             circle.transform.localRotation = Quaternion.identity;
             circle.transform.localScale = Vector3.one;
             circle.transform.localPosition = Vector3.zero;
+        }
+
+        #endregion
+        
+        #region FullSpheres
+
+        public void SetEnabledFullSpheres(bool state)
+        {
+            SetEnabledRenderers<FullSphereRenderer>(state);
+        }
+
+        public void DestroyAndRecreateBodyFullSpheres(CelestialBody targetObject)
+        {
+            RemoveBodyFullSpheres();
+            CreateBodyFullSphere(targetObject);
+        }
+
+        private void RemoveBodyFullSpheres()
+        {
+            foreach (var poiRenderReference in _poiRenderReferenceManager.AllPoiRenderReferences)
+            {
+                poiRenderReference.DestroyFullSphereReference();
+            }
+        }
+
+        private void CreateBodyFullSphere(CelestialBody body)
+        {
+            CreateBodyItems(body, CreateMode.FullSpheres);
+        }
+
+        private PoiRenderReference CreateFullSphereFromPoi(POI poi, bool enabled = true)
+        {
+            LogDebug($"[CreateFullSphereFromPoi]: Generating full sphere around body: {poi.Body.Serialize()}, color:{poi.Color.Serialize()}, radius:{poi.RadiusForRendering()}, line:{poi.LineWidth}, res: {poi.Resolution}");
+            var poiRenderReference = _poiRenderReferenceManager.GetOrCreatePoiRenderReference(poi);
+            var fullSphereRenderReference = poiRenderReference.CreateAndReplaceFullSphere();
+            if (fullSphereRenderReference == null)
+            {
+                LogError("fullSphereRenderReference null wtf");
+            }
+            SetFullSphere(fullSphereRenderReference, poi.Body, poi.Color, (float)poi.RadiusForRendering(), poi.LineWidth);
+            fullSphereRenderReference.SetEnabled(enabled);
+            return poiRenderReference;
+        }
+
+        private void SetFullSphere(
+            FullSphereRenderer fullSphere,
+            CelestialBody body,
+            Color color,
+            float radius,
+            float width = 1f)
+        {
+            fullSphere.wireframeColor = color;
+            fullSphere.radius = radius * ScaledSpace.InverseScaleFactor;
+            fullSphere.lineWidth = ScaleLineWidth(radius, width);
+
+            fullSphere.transform.SetParent(body.MapObject.trf);
+            fullSphere.transform.localRotation = Quaternion.identity;
+            fullSphere.transform.localScale = Vector3.one;
+            fullSphere.transform.localPosition = Vector3.zero;
         }
 
         #endregion

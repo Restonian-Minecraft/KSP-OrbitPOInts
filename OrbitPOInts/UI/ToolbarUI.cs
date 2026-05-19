@@ -437,6 +437,7 @@ namespace OrbitPOInts.UI
                 Settings.Instance.EnableSpheres = CWIL.WrapToggle(Settings.Instance.EnableSpheres, "Draw Spheres");
                 Settings.Instance.AlignSpheres = CWIL.WrapToggle(Settings.Instance.AlignSpheres, "Align Spheres");
                 Settings.Instance.EnableCircles = CWIL.WrapToggle(Settings.Instance.EnableCircles, "Draw Circles");
+                Settings.Instance.EnableFullSpheres = CWIL.WrapToggle(Settings.Instance.EnableFullSpheres, "Draw Full Spheres");
 
                 Settings.Instance.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies = CWIL.WrapToggle(Settings.Instance.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies, "Show POI Max Terrain Altitude On Atmospheric Bodies");
                 

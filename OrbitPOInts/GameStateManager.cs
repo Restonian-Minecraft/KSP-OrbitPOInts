@@ -111,6 +111,7 @@ namespace OrbitPOInts
                 PropChangeMapping<Settings, OrbitPoiVisualizer<GameStateManager>>.From(s => s.AlignSpheres, v => v.AlignSpheres),
                 PropChangeMapping<Settings, OrbitPoiVisualizer<GameStateManager>>.From(s => s.EnableSpheres, v => v.DrawSpheres, () => Visualizer.SetEnabledSpheres(Visualizer.DrawSpheres)),
                 PropChangeMapping<Settings, OrbitPoiVisualizer<GameStateManager>>.From(s => s.EnableCircles, v => v.DrawCircles, () => Visualizer.SetEnabledCircles(Visualizer.DrawCircles)),
+                PropChangeMapping<Settings, OrbitPoiVisualizer<GameStateManager>>.From(s => s.EnableFullSpheres, v => v.DrawFullSpheres, () => Visualizer.SetEnabledFullSpheres(Visualizer.DrawFullSpheres)),
                 PropChangeMapping<Settings, OrbitPoiVisualizer<GameStateManager>>.From(s => s.FocusedBodyOnly, v => v.FocusedBodyOnly, () => Visualizer.RefreshCurrentRenderers()),
                 PropChangeMapping<Settings, OrbitPoiVisualizer<GameStateManager>>.From(s => s.ShowPoiMaxTerrainAltitudeOnAtmosphericBodies, () => Visualizer.RefreshCurrentRenderers())
             );
@@ -465,6 +466,7 @@ namespace OrbitPOInts
         {
             enabled = settings.GlobalEnable;
             Visualizer.DrawCircles = settings.EnableCircles;
+            Visualizer.DrawFullSpheres = settings.EnableFullSpheres;
             Visualizer.DrawSpheres = settings.EnableSpheres;
             Visualizer.AlignSpheres = settings.AlignSpheres;
             Visualizer.FocusedBodyOnly = settings.FocusedBodyOnly;
@@ -480,7 +482,7 @@ namespace OrbitPOInts
         {
             RegisterSettings(settings);
             UpdatePropsFromSettings(settings);
-            LogDebug($"[CheckEnabled] enable: {settings.GlobalEnable}, circles: {Visualizer.DrawCircles}, spheres: {Visualizer.DrawSpheres}, align spheres: {Visualizer.AlignSpheres}");
+            LogDebug($"[CheckEnabled] enable: {settings.GlobalEnable}, circles: {Visualizer.DrawCircles}, full spheres: {Visualizer.DrawFullSpheres}, spheres: {Visualizer.DrawSpheres}, align spheres: {Visualizer.AlignSpheres}");
             // check to make sure we still enabled after loading settings
             if (!enabled)
             {
