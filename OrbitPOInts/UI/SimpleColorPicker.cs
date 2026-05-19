@@ -94,7 +94,10 @@ namespace OrbitPOInts.UI
             _color = new Color(_red, _green, _blue, _alpha);
 
             // A simple way to display the color you've picked.
-            Controls.ColorBox(_color, 100, 100);
+            GUILayout.BeginHorizontal();
+            Controls.ColorBox(_initialColor, 50, 100);
+            Controls.ColorBox(_color, 50, 100);
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
 
