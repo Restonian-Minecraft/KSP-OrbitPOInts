@@ -21,7 +21,7 @@ namespace OrbitPOInts
     using HighLogic = KSP_HighLogic;
     using GameScenes = KSP_GameScenes;
 
-    [RequireComponent(typeof(LineRenderer))]
+    [RequireComponent(typeof(MeshRenderer))]
     public class FullSphereRenderer : MonoBehaviour, IRenderer
     {
         public float radius { get; set; } = 1.0f;
