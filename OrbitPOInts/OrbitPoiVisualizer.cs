@@ -302,13 +302,13 @@ namespace OrbitPOInts
             if (AlignSpheres)
             {
                 DoActionOnSpheres(sphere => renderersThatNeedTransformsAligned.Add(sphere));
-                DoActionOnSpheres(fullSphere => renderersThatNeedTransformsAligned.Add(fullSphere));
+                DoActionOnFullSpheres(fullSphere => renderersThatNeedTransformsAligned.Add(fullSphere));
             }
             else
             {
                 List<IRenderer> rendererThatNeedTransformsReset = new();
                 DoActionOnSpheres(sphere => rendererThatNeedTransformsReset.Add(sphere));
-                DoActionOnSpheres(fullSphere => rendererThatNeedTransformsReset.Add(fullSphere));
+                DoActionOnFullSpheres(fullSphere => rendererThatNeedTransformsReset.Add(fullSphere));
                 foreach (var renderer in rendererThatNeedTransformsReset)
                 {
                     if (!renderer.IsAliveAndActiveWithTransform()) continue;
