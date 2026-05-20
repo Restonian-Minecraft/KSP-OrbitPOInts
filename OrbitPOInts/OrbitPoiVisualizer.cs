@@ -96,42 +96,16 @@ namespace OrbitPOInts
             Logger.LogError($"[OrbitPoiVisualizer] {message}");
         }
 
-        private void DoActionOnSpheres(Action<WireSphereRenderer> action)
+        private void DoActionOnRenderers<TRenderer>(Action<TRenderer> action) where TRenderer : MonoBehaviour, IRenderer
         {
-            foreach (var sphere in _poiRenderReferenceManager.GetAllRenderReferenceRenderers<WireSphereRenderer>())
+            foreach (var renderer in _poiRenderReferenceManager.GetAllRenderReferenceRenderers<TRenderer>())
             {
-                if (!sphere.IsAlive() || sphere.IsDying)
+                if (!renderer.IsAlive() || renderer.IsDying)
                 {
-                    LogError($"[DoActionOnCircles] sphere null or dying");
+                    LogError($"[DoActionOnRenderers] {typeof(TRenderer)} null or dying");
                     continue;
                 }
-                action.Invoke(sphere);
-            }
-        }
-
-        private void DoActionOnCircles(Action<CircleRenderer> action)
-        {
-            foreach (var circle in _poiRenderReferenceManager.GetAllRenderReferenceRenderers<CircleRenderer>())
-            {
-                if (!circle.IsAlive() || circle.IsDying)
-                {
-                    LogError($"[DoActionOnCircles] circle null or dying");
-                    continue;
-                }
-                action.Invoke(circle);
-            }
-        }
-        
-        private void DoActionOnFullSpheres(Action<FullSphereRenderer> action)
-        {
-            foreach (var fullSphere in _poiRenderReferenceManager.GetAllRenderReferenceRenderers<FullSphereRenderer>())
-            {
-                if (!fullSphere.IsAlive() || fullSphere.IsDying)
-                {
-                    LogError($"[DoActionOnFullSpheres] full sphere null or dying");
-                    continue;
-                }
-                action.Invoke(fullSphere);
+                action.Invoke(renderer);
             }
         }
 
@@ -296,19 +270,19 @@ namespace OrbitPOInts
             }
             List<IRenderer> renderersThatNeedTransformsAligned = new();
 
-            DoActionOnCircles(circle => renderersThatNeedTransformsAligned.Add(circle));
+            DoActionOnRenderers<CircleRenderer>(circle => renderersThatNeedTransformsAligned.Add(circle));
             // should FullSphereRenderer go here instead? Like the CircleRenderer, it looks the same in all orientations   
 
             if (AlignSpheres)
             {
-                DoActionOnSpheres(sphere => renderersThatNeedTransformsAligned.Add(sphere));
-                DoActionOnFullSpheres(fullSphere => renderersThatNeedTransformsAligned.Add(fullSphere));
+                DoActionOnRenderers<WireSphereRenderer>(sphere => renderersThatNeedTransformsAligned.Add(sphere));
+                DoActionOnRenderers<FullSphereRenderer>(fullSphere => renderersThatNeedTransformsAligned.Add(fullSphere));
             }
             else
             {
                 List<IRenderer> rendererThatNeedTransformsReset = new();
-                DoActionOnSpheres(sphere => rendererThatNeedTransformsReset.Add(sphere));
-                DoActionOnFullSpheres(fullSphere => rendererThatNeedTransformsReset.Add(fullSphere));
+                DoActionOnRenderers<WireSphereRenderer>(sphere => rendererThatNeedTransformsReset.Add(sphere));
+                DoActionOnRenderers<FullSphereRenderer>(fullSphere => rendererThatNeedTransformsReset.Add(fullSphere));
                 foreach (var renderer in rendererThatNeedTransformsReset)
                 {
                     if (!renderer.IsAliveAndActiveWithTransform()) continue;
