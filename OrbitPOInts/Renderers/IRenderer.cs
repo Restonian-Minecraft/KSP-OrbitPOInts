@@ -13,7 +13,7 @@ namespace OrbitPOInts
     {
         public string name { get; set; }
         public float radius { get; set; }
-        public Color wireframeColor { get; set; }
+        public Color color { get; set; }
         public float lineWidth { get; set; }
         public bool enabled { get; set; }
         public bool IsDying { get; }

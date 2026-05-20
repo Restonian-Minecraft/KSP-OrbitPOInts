@@ -29,7 +29,7 @@ namespace OrbitPOInts
         public int latitudeLines = 10;
         public int longitudeLines = 10;
         private GameObject[] lineObjects = { };
-        public Color wireframeColor { get; set; } = Color.green;
+        public Color color { get; set; } = Color.green;
         public float lineWidth { get; set; } = 0.1f;
         public bool IsDying { get; private set; }
 
@@ -102,7 +102,7 @@ namespace OrbitPOInts
             line.useWorldSpace = false;
             line.positionCount = longitudeLines + 1;
             line
-                .SetColor(wireframeColor)
+                .SetColor(color)
                 .SetWidth(lineWidth);
             lineObject.transform.SetParent(transform);
             lineObject.transform.localPosition = Vector3.zero;
@@ -133,7 +133,7 @@ namespace OrbitPOInts
             line.useWorldSpace = false;
             line.positionCount = latitudeLines; // Making longitude lines conform to the curvature
             line
-                .SetColor(wireframeColor)
+                .SetColor(color)
                 .SetWidth(lineWidth);
             lineObject.transform.SetParent(transform);
             lineObject.transform.localPosition = Vector3.zero;
@@ -174,7 +174,7 @@ namespace OrbitPOInts
 
         public void SetColor(Color color)
         {
-            wireframeColor = color;
+            this.color = color;
             foreach (var lineObject in lineObjects)
             {
                 if (!lineObject.IsAlive()) continue;

@@ -25,7 +25,7 @@ namespace OrbitPOInts
     public class FullSphereRenderer : MonoBehaviour, IRenderer
     {
         public float radius { get; set; } = 1.0f;
-        public Color wireframeColor { get; set; } = Color.green; // same name as other renderers - makes less sense here, may change
+        public Color color { get; set; } = Color.green;
         public float lineWidth { get; set; } = 0.1f; // unused - here to match the other renderers
         private GameObject sphereObject;
         public bool IsDying { get; private set; }
@@ -54,7 +54,7 @@ namespace OrbitPOInts
             sphereObject = new GameObject(NameKey);
             var sphere = sphereObject.AddComponent<MeshRenderer>();
             sphere.material = GetMaterial();
-            sphere.material.color = wireframeColor;
+            sphere.material.color = color;
             sphere.receiveShadows = false;
 
             sphereObject.transform.SetParent(transform);
@@ -94,7 +94,7 @@ namespace OrbitPOInts
 
         public void SetColor(Color color)
         {
-            wireframeColor = color;
+            this.color = color;
             if (!sphereObject.IsAlive()) return;
             sphereObject.GetComponent<MeshRenderer>().material.color = color;
         }

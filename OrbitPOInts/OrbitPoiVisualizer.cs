@@ -573,7 +573,7 @@ namespace OrbitPOInts
         )
         {
 
-            sphere.wireframeColor = color;
+            sphere.color = color;
             sphere.radius = radius * ScaledSpace.InverseScaleFactor;
             sphere.lineWidth = ScaleLineWidth(radius, width);
             sphere.latitudeLines = resolution;
@@ -635,7 +635,7 @@ namespace OrbitPOInts
             float width = 1f,
             int segments = 360)
         {
-            circle.wireframeColor = color;
+            circle.color = color;
             circle.radius = radius * ScaledSpace.InverseScaleFactor;
             circle.lineWidth = ScaleLineWidth(radius, width);
             circle.segments = segments;
@@ -695,7 +695,7 @@ namespace OrbitPOInts
             float radius,
             float width = 1f)
         {
-            fullSphere.wireframeColor = color;
+            fullSphere.color = color;
             fullSphere.radius = radius * ScaledSpace.InverseScaleFactor;
             fullSphere.lineWidth = ScaleLineWidth(radius, width);
 

@@ -26,7 +26,7 @@ namespace OrbitPOInts
     public class CircleRenderer : MonoBehaviour, IRenderer
     {
         public float radius { get; set; } = 1.0f;
-        public Color wireframeColor { get; set; } = Color.green;
+        public Color color { get; set; } = Color.green;
         public float lineWidth { get; set; } = 0.1f;
         public int segments { get; set; } = 50;
         private GameObject lineObject;
@@ -61,7 +61,7 @@ namespace OrbitPOInts
             line.useWorldSpace = false;
             line.positionCount = segments + 1; // +1 to close the circle
             line
-                .SetColor(wireframeColor)
+                .SetColor(color)
                 .SetWidth(lineWidth);
             lineObject.transform.SetParent(transform);
             lineObject.transform.localPosition = Vector3.zero;
@@ -102,7 +102,7 @@ namespace OrbitPOInts
 
         public void SetColor(Color color)
         {
-            wireframeColor = color;
+            this.color = color;
             if (!lineObject.IsAlive()) return;
             foreach (var line in lineObject.GetComponents<LineRenderer>())
             {
