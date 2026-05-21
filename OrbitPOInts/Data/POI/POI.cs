@@ -223,6 +223,8 @@ namespace OrbitPOInts.Data.POI
             { PoiType.Atmosphere, Guid.NewGuid() },
             { PoiType.MinimumOrbit, Guid.NewGuid() },
             { PoiType.MaxTerrainAltitude, Guid.NewGuid() },
+            { PoiType.ScienceFlyingLow, Guid.NewGuid() },
+            { PoiType.ScienceSpaceLow, Guid.NewGuid() },
         });
 
         public static Guid ResolveDefaultOrCreateIdFromType(PoiType type)
@@ -244,6 +246,8 @@ namespace OrbitPOInts.Data.POI
                 PoiType.Atmosphere => body.atmosphereDepth + body.Radius,
                 PoiType.MinimumOrbit => body.minOrbitalDistance,
                 PoiType.MaxTerrainAltitude => CelestialBodyCache.Instance.BodyToMaxAltitudeDictionary[body],
+                PoiType.ScienceFlyingLow => body.scienceValues.flyingAltitudeThreshold + body.Radius,
+                PoiType.ScienceSpaceLow => body.scienceValues.spaceAltitudeThreshold + body.Radius,
                 PoiType.Custom => throw new NotSupportedException("Custom does not have a predefined radius."),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
@@ -259,6 +263,8 @@ namespace OrbitPOInts.Data.POI
                 PoiType.Atmosphere => true,
                 PoiType.MinimumOrbit => true,
                 PoiType.MaxTerrainAltitude => true,
+                PoiType.ScienceFlyingLow => true, // Might want to change this to false later
+                PoiType.ScienceSpaceLow => true, // Might want to change this to false later
                 PoiType.Custom => true,
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
@@ -274,6 +280,8 @@ namespace OrbitPOInts.Data.POI
                 PoiType.Atmosphere => 40,
                 PoiType.MinimumOrbit => 50,
                 PoiType.MaxTerrainAltitude => 55,
+                PoiType.ScienceFlyingLow => 40,
+                PoiType.ScienceSpaceLow => 40,
                 PoiType.Custom => 50,
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };

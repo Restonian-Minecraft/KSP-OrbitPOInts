@@ -8,6 +8,8 @@ namespace OrbitPOInts.Data.POI
         Atmosphere,
         MinimumOrbit,
         MaxTerrainAltitude,
+        ScienceFlyingLow,
+        ScienceSpaceLow,
         Custom,
     }
 }

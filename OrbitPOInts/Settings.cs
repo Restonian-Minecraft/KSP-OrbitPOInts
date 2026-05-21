@@ -314,6 +314,8 @@ namespace OrbitPOInts
                 { PoiType.Atmosphere, Color.cyan },
                 { PoiType.MinimumOrbit, Color.green },
                 { PoiType.MaxTerrainAltitude, Color.red },
+                { PoiType.ScienceFlyingLow, Color.blue },
+                { PoiType.ScienceSpaceLow, Color.yellow },
                 { PoiType.Custom, Color.white },
             }
         );
@@ -340,7 +342,9 @@ namespace OrbitPOInts
                     POI.DefaultFrom(PoiType.SphereOfInfluence),
                     POI.DefaultFrom(PoiType.Atmosphere),
                     POI.DefaultFrom(PoiType.MinimumOrbit),
-                    POI.DefaultFrom(PoiType.MaxTerrainAltitude)
+                    POI.DefaultFrom(PoiType.MaxTerrainAltitude),
+                    POI.DefaultFrom(PoiType.ScienceFlyingLow),
+                    POI.DefaultFrom(PoiType.ScienceSpaceLow)
                 )
             );
 
