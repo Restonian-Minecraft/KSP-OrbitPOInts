@@ -255,10 +255,13 @@ namespace OrbitPOInts.Data.POI
 
         public static bool GetDefaultEnabledForType(PoiType type)
         {
+            // FIX: There is a bug which prevents POIs from being enabled properly when they are disabled by default.
+            //      E.g. when PoiType.HillSphere was false by default, it wouldn't be visualized even after toggling
+            //      on/off in the menu. 
             return type switch
             {
                 PoiType.None => false,
-                PoiType.HillSphere => false,
+                PoiType.HillSphere => true, // temporarily set to true as a work-around
                 PoiType.SphereOfInfluence => true,
                 PoiType.Atmosphere => true,
                 PoiType.MinimumOrbit => true,
