@@ -14,6 +14,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+// Enables reloading the mod dll in-game using the HotReloadKSP mod.
+// NOTE: Each time the mod is reloaded, it creates a new toolbar button and leaves
+// a duplicate behind. This is fine for development, but may want to fix/remove
+// this for release.
+[assembly: AssemblyMetadata("HotReload", "true")]
+
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
