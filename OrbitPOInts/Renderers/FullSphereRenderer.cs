@@ -46,7 +46,7 @@ namespace OrbitPOInts
 
         private Material GetMaterial()
         {
-            return new Material(Shader.Find("Legacy Shaders/Transparent/Specular"));
+            return new Material(Shader.Find("Legacy Shaders/Transparent/Diffuse"));
         }
 
         void Start()
