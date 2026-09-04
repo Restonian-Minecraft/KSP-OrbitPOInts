@@ -1,3 +1,8 @@
+#### This is a fork of https://github.com/StrikeForceZero/KSP-OrbitPOInts
+The `GameData/OrbitPOInts/Plugins/OrbitPOInts.dll` file has been updated [here](GameData/OrbitPOInts/Plugins/OrbitPOInts.dll), and can be used along with the old version file to test the current state of the mod.
+
+---
+
 # OrbitPOInts
 Visualize Orbital Points of Interest in the Tracking Station and Mapview
 
